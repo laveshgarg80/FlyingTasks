@@ -60,8 +60,27 @@ header {
     padding: 40px 25px;
     border-radius: 10px;
     margin-top: 15px;
-    font-size: 30px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+    justify-content: space-between;
+
+    .task-heading {
+        font-size: 30px;
+    }
+
+    .task-delete-btn {
+        background: none;
+        color: red;
+        border: 1px solid red;
+        padding: 10px 25px;
+        cursor: pointer;
+        border-radius: 10px;
+        font-size: large;
+        font-weight: 100;
+        cursor: pointer
+    }
 }
 
 .task:hover {
@@ -75,8 +94,15 @@ header {
 	color: inherit;
 	border: 3px solid #e4e4e4;
 	padding: 20px 25px;
-	cursor: pointer;
+	cursor: pointer !important;
 	border-radius: 10px;
+}
+
+#new-task:hover {
+    background-color: white;
+    color: black;
+    cursor: pointer !important;
+    border: 3px solid #e4e4e4;
 }
 
 

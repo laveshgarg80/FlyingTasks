@@ -1,38 +1,6 @@
-function createNewTaskElement(taskName, parentColumn) {
-    const newTaskToAdd = document.createElement('div');
-    newTaskToAdd.classList.add('task');
-    newTaskToAdd.setAttribute('draggable', true);
-    newTaskToAdd.innerHTML = taskName;
-    parentColumn.appendChild(newTaskToAdd)
-}
-
-
-if (localStorage.getItem('Tasks')) {
-    let data = localStorage.getItem('Tasks');
-    data = JSON.parse(data);
-    for (let taskBox in data) {
-        const parent = document.querySelector(`#${taskBox}`);
-        data[taskBox].map(ele => {
-            createNewTaskElement(ele, parent);
-        })
-    }
-}
+import {createNewTaskElement,deleteButton,pickAndDropTask} from './utils/helper.js';
 
 const newTaskBtn = document.querySelector('#new-task');
-
-function pickAndDropTask() {
-    const allTasks = document.querySelectorAll('.task');
-    allTasks.forEach((task) => {
-        task.addEventListener('dragstart', () => {
-            task.classList.add('current-dragging-task');
-        });
-
-        task.addEventListener('dragend', () => {
-            task.classList.remove('current-dragging-task');
-        })
-    });
-}
-
 newTaskBtn.addEventListener('click', () => {
     if (!localStorage.getItem('Tasks')) localStorage.setItem('Tasks', JSON.stringify({ 'todo-box-tasks': [], 'in-progress-tasks': [], 'done-tasks': [] }));
     const newTaskName = prompt('Please enter a new task!!');
@@ -48,9 +16,9 @@ newTaskBtn.addEventListener('click', () => {
     localStorage.setItem('Tasks', JSON.stringify(data));
 
     pickAndDropTask();
+    deleteButton('button');
 });
 
-pickAndDropTask();
 
 const allTaskBox = document.querySelectorAll('.task-box')
 allTaskBox.forEach((taskBox) => {
@@ -63,7 +31,8 @@ allTaskBox.forEach((taskBox) => {
         const taskToAdd = document.querySelector('.current-dragging-task');
         const destinationTaskBox = taskBox.querySelector('.tasks');
         const sourceTaskBox = document.querySelector('.removeTaskFromMe');
-        
+        if(destinationTaskBox === sourceTaskBox) return;
+
         let data = localStorage.getItem('Tasks');
         data = JSON.parse(data);
 
@@ -73,9 +42,9 @@ allTaskBox.forEach((taskBox) => {
         sourceTaskBox.classList.remove('removeTaskFromMe');
 
         //Add in Destination
-        data[destinationTaskBox.id].push(taskToAdd.innerHTML);
+        data[destinationTaskBox.id].push(taskToAdd.querySelector('.task-heading').innerHTML);
         localStorage.setItem('Tasks', JSON.stringify(data));
-        
+
         destinationTaskBox.appendChild(taskToAdd);
     })
 
